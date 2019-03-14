@@ -1,3 +1,8 @@
+const printToDom = (divId, textToPrint) => {
+  const selectedDiv = document.getElementById(divId);
+  selectedDiv.innerHTML = textToPrint;
+};
+
 const pets = [
     {
       name: "Dusty",
@@ -210,3 +215,63 @@ const pets = [
       imageUrl: "http://lsae2.iypcdn.com/static//modules/uploads/photos/language1/dino-live-22.jpg?119"
     }
   ];
+
+  const buildPets=(petType)=>{
+    let domString = '';
+    petType.forEach((pet)=>{
+        
+        domString += `<div class='card'>`;
+        domString += `<div>${pet.name}</div>`;
+        domString += `<img src=${pet.imageUrl}>`;
+        domString += `<p>${pet.color}</p>`;
+        domString += `<p>${pet.specialSkill}</p>`;
+        domString += `<div id='type'>`
+        if (pet.type === 'dog'){
+          domString += `<div id='typeDog'><p>${pet.type}<style> #typeDog{ background-color: cyan;}</style></p></div>`;
+          
+        } else if (pet.type === 'cat'){
+          domString += `<div id='typeCat'><p>${pet.type}<style> #typeCat{ background-color: magenta;}</style></p></div>`
+          
+        } else if (pet.type === 'dino'){
+          domString += `<div id='typeDino'><p>${pet.type}<style> #typeDino{ background-color: yellow;}</style></p></div>`
+          
+        }
+        domString += `</div>`
+        domString += `</div>`;
+      });
+        
+    printToDom('pet-list',domString);
+};
+
+  
+
+  const buttonClick = (e) =>{
+    const buttonId = e.target.id;
+    const selectedPets = [];
+    //console.log('ecksdee', e.target.id);
+    pets.forEach((pet) => {
+      if(pet.type === buttonId){
+        selectedPets.push(pet);
+  
+      }
+    });
+    if(buttonId === 'All'){
+      return buildPets(pets);
+    }
+  
+    buildPets(selectedPets);
+  };
+  const buttonEvents = () => {
+    document.getElementById('dog').addEventListener('click', buttonClick);
+    document.getElementById('cat').addEventListener('click', buttonClick);
+    document.getElementById('dino').addEventListener('click', buttonClick);
+    document.getElementById('All').addEventListener('click', buttonClick);
+  };
+
+  const init = () =>{
+    buttonEvents();  
+    buildPets(pets);
+  };
+  
+  init();
+  
